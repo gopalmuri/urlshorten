@@ -3,7 +3,8 @@ import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
+
 const DATA_DIR = path.join("data");
 const DATA_FILE = path.join(DATA_DIR, "links.json");
 
