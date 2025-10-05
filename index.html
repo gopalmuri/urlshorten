@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>URL Shortener</title>
+</head>
+
+
+
+
+<body>
+  <div class="container">
+    <h1>URL Shortener</h1>
+    <form id="shorten-form">
+      <div>
+        <label for="url">Enter URL:</label>
+        <input type="url" name="url" id="url" required />
+      </div>
+      <div>
+        <label for="shortCode">Enter shortCode:</label>
+        <input type="text" id="shortCode" name="shortCode" required />
+      </div>
+      <button type="submit">Shorten</button>
+    </form>
+
+    <h2>Shortened URLs</h2>
+    <ul id="shortened-urls"></ul>
+  </div>
+
+  <script>
+    document.getElementById("shorten-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formdata = new FormData(event.target);
+      const url = formdata.get("url");
+      const shortCode = formdata.get("shortCode");
+      console.log(url, shortCode);
+
+      try {
+        const response = await fetch("/shorten", {
+          method: "POST", // ✅ CORRECTED syntax
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url, shortCode }),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          alert("Form submitted successfully!");
+
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="${result.shortUrl}" target="_blank">${result.shortUrl}</a>`;
+          document.getElementById("shortened-urls").appendChild(li);
+        } else {
+          const error = await response.text();
+          alert("Error: " + error);
+        }
+      } catch (error) {
+        console.log("Fetch error:", error);
+        alert("Something went wrong!");
+      }
+    });
+  </script>
+</body>
+
+</html>
