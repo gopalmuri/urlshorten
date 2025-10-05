@@ -98,7 +98,7 @@ const server = createServer(async (req, res) => {
         await saveLinks(links);
 
         res.writeHead(200, { "Content-Type": "application/json" });
-        return res.end(JSON.stringify({ success: true, shortUrl: `http://localhost:${PORT}/${finalShortCode}` }));
+        return res.end(JSON.stringify({ success: true, shortUrl: `http://:${PORT}/${finalShortCode}` }));
       } catch (err) {
         console.error("POST /shorten failed:", err);
         res.writeHead(500, { "Content-Type": "text/plain" });
